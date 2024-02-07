@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head><title>Home page</title>
+    
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+</head>
+
+<body>
+    <h1> Cars List Inventory</h1>
+
+    <form action="/cars/" method="post">
+
+        <input type="text" name="car" id="car" placeholder="Add your car"/>
+        <button class="button is-primary" type="submit">Add a Car</button>
+
+    </form>
+    <ul> <% todos.forEach(function(todo) {%>
+     
+     
+     <li> <form action="/cars/<% todos._id %>/update " method="post" style="display: inline;">
+            <input  type="text" name="car" id="car" value="<%- todos.car %>"/>
+            <button class="button is-primary" type="submit">Update</button>
+        </form>
+        <form action="/cars/<% todos._id %>/complete " method="post" style="display: inline;">
+
+            <button class="button is-primary" type="submit"><% todos.is_complete ? "Uncomplete" : "Complete"%> </button>
+        </form>
+        <form action="/cars/<%todos.id%>/delete" method="post" style="display: inline;">
+        <button class="button is-primary" type="submit" > Delete </button>
+        </form>
+        </li>
+
+        <% }); %>   
+</ul>
+
+</body>
+</html>

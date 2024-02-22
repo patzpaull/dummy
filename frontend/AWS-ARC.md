@@ -1,4 +1,4 @@
-- [BaridiBaridi Proposed AWS Architecture :mage:](#baridibaridi-proposed-aws-architecture🧙‍♂️)
+- [BaridiBaridi Proposed AWS Architecture :mage:](#baridibaridi-proposed-aws-architecture)
   * [Overview](#overview)
   * [Components](#components)
     + [Availability Zones](#availability-zones)
@@ -17,7 +17,8 @@
 
 
 
-# BaridiBaridi Proposed AWS Architecture🧙‍♂️
+# BaridiBaridi Proposed AWS Architecture
+# 🧙‍♂️
 
 ![BaridiBaridi Cloud Architecture](https://github.com/patzpaull/dummy/assets/159112522/1bdce07e-bd0a-4b01-821d-dba9b05075ee)
 

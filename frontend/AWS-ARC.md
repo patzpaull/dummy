@@ -1,7 +1,7 @@
 - [BaridiBaridi Proposed AWS Architecture :mage:](#baridibaridi-proposed-aws-architecture--mage-)
   * [Overview](#overview)
   * [Components](#components)
-    + [Availability Zones (AZs)](#availability-zones--azs--)
+    + [Availability Zones (AZs)](#availability-zones--azs)
     + [Load Balancer:](#load-balancer)
     + [Lambda Function](#lambda-function)
     + [Keycloak SSO ](#keycloak-sso)

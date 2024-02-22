@@ -2,11 +2,11 @@
   * [Overview](#overview-)
   * [Components](#components-)
     + [Availability Zones (AZs)](#availability-zones--azs--)
-    + [Load Balancer](#load-balancer-)
+    + [Load Balancer:](#load-balancer-)
     + [Lambda Function](#lambda-function-)
-    + [Keycloak SSO ](#keycloak-sso--)
-    + [API Gateway](#api-gateway-)
-    + [AWS Fargate](#aws-fargate-)
+    + [Keycloak SSO ](#keycloak-sso-)
+    + [API Gateway:](#api-gateway-)
+    + [AWS Fargate:](#aws-fargate-)
     + [NAT Gateway](#nat-gateway-)
     + [Private Subnet Resources](#private-subnet-resources-)
     + [AWS Direct Connect](#aws-direct-connect-)
@@ -18,7 +18,9 @@
 
 
 # BaridiBaridi Proposed AWS Architecture :mage:
-![AWS BaridiBaridi Architecture](https://files.slack.com/files-pri/T01B7P7P6GZ-F06LRU37Y9W/download/cloud_architecture.svg?origin_team%3DT01B7P7P6GZ)
+
+![BaridiBaridi Cloud Architecture](https://github.com/patzpaull/dummy/assets/159112522/1bdce07e-bd0a-4b01-821d-dba9b05075ee)
+
 ## Overview:
 - This document provides an overview of the <strong>New AWS Infrastructure</strong> designed for a Europe-based application. 
 - The architecture spans across two availability zones (AZs) within the EU West region.
@@ -39,7 +41,7 @@
 - Utilized to redirect authentication through <strong>Keycloak for API Gateway authorization</strong>. 
 - Unauthorized users attempting to access private subnets are redirected to authenticate through the public subnets and API Gateway for <strong>Keycloak Single Sign-On (SSO)</strong>.
 
-### Keycloak SSO :
+### Keycloak SSO:
 [BaridiBaridi SSO Dashboard](https://sso.baridibaridi.co.tz/)
 - Implemented to monitor and allow token authorization for the defined keycloak users. 
 - Any unregistered accounts will be termed as <strong>unauthorized and traffic returned through the API gateway</strong> to check for authorization. 

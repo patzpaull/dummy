@@ -1,4 +1,4 @@
-- [BaridiBaridi Proposed AWS Architecture :mage:](#baridibaridi-proposed-aws-architecture--mage)
+- [BaridiBaridi Proposed AWS Architecture :mage:](#baridibaridi-proposed-aws-architecture)
   * [Overview](#overview)
   * [Components](#components)
     + [Availability Zones](#availability-zones)

@@ -1,7 +1,7 @@
 - [BaridiBaridi Proposed AWS Architecture :mage:](#baridibaridi-proposed-aws-architecture--mage-)
   * [Overview](#overview)
   * [Components](#components)
-    + [Availability Zones (AZs)](#availability-zones--azs)
+    + [Availability Zones](#availability-zones)
     + [Load Balancer:](#load-balancer)
     + [Lambda Function](#lambda-function)
     + [Keycloak SSO ](#keycloak-sso)
@@ -11,9 +11,9 @@
     + [Private Subnet Resources](#private-subnet-resources)
     + [AWS Direct Connect](#aws-direct-connect)
   * [Considerations](#considerations)
-  * [Segregation of Public and Private Resources](#segregation-of-public-and-private-resources-)
-  * [Redundancy and Scalability](#redundancy-and-scalability-)
-- [Additional Notes](#additional-notes-)
+  * [Segregation of Public and Private Resources](#segregation-of-public-and-private-resources)
+  * [Redundancy and Scalability](#redundancy-and-scalability)
+- [Additional Notes](#additional-notes)
 
 
 
@@ -28,7 +28,7 @@
 
 ## Components:
 
-### Availability Zones (AZs):
+### Availability Zones:
 
 - AZ1: One private subnet for internal resources, including Keycloak authentication integration and an instance running Fargate. Additionally, there is one public subnet housing a dashboard UI to authenticate user traffic before reaching the private subnet.
 

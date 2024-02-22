@@ -17,8 +17,7 @@
 
 
 
-# BaridiBaridi Proposed AWS Architecture
-🧙‍♂️
+# BaridiBaridi Proposed AWS Architecture🧙‍♂️
 
 ![BaridiBaridi Cloud Architecture](https://github.com/patzpaull/dummy/assets/159112522/1bdce07e-bd0a-4b01-821d-dba9b05075ee)
 

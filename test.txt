@@ -1,0 +1,116 @@
+name: Second Gen Deploy to ECS
+
+on:
+  push:
+    branches: ['develop']
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: ['16.X']
+        appname: ['staging-aws-codedeploy']
+        deploy-group: ['staging']
+        repo: ['baridi-2nd-gen-repo']
+    # environment: production
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up AWS CLI
+        run: |
+          echo "Setting up AWS CLI..."
+          export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+          export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+          export AWS_DEFAULT_REGION=eu-west-1
+
+      # - name: Get secrets from AWS Secrets Manager
+      #   id: secrets
+      #   env:
+      #     AWS_DEFAULT_REGION: eu-west-1
+      #   uses: aws-actions/aws-secretsmanager-get-secrets@v1
+        
+      #   with:
+      #     secret-ids: arn:aws:secretsmanager:eu-west-1:817722091681:secret:BARIDI_KEYCLOAK_CREDENTIALS-Au0jKK
+      #     parse-json-secrets: true
+      # - name: Use secrets
+      #   run: |
+      #       echo "Using secret username: ${{ steps.secrets.outputs.secret-username}}"
+      #       echo "Using secret password: ${{ steps.secrets.outputs.secret-password }}"
+      #   # parse-json-secrets: true
+
+      - name: Log in to Amazon ECR Private
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+        with:
+          registry-type: private
+          skip-logout: false
+        env:
+          AWS_REGION: eu-west-1
+
+      - name: Check if existing Docker container is running and stop it
+        run: |
+          echo "Checking if h=the current Docker Container is running..."
+          if docker ps -a --filter name=baridi-2nd-gen-repo | grep baridi-2nd-gen-repo; then
+            echo "Stopping the existing Docker container... "
+            docker stop baridi-2nd-gen-repo || true
+            echo "Removing the stopped container... "
+            docker rm baridi-2nd-gen-repo || true
+          else
+            echo " No existing Docker Container found. "
+          fi
+
+      - name: Build, tag, and Push image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{steps.login-ecr.outputs.registry}}
+          IMAGE_TAG: ${{github.sha}}
+        run: |
+          #  Build Docker container and 
+          #  push to ECR so that it can 
+          #  be deployed to ECS.
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_ENV
+
+      - name: Fill in the new image ID in the Amazon ECS Task definition
+        id: task-def
+        env:
+          ECS_TASK_DEFINITION: ${{env.ECS_TASK_DEFINITION}}
+          CONTAINER_NAME: ${{env.CONTAINER_NAME}}
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: ${{env.ECS_TASK_DEFINITION}}
+          container-name: ${{env.CONTAINER_NAME}}
+          image: ${{steps.build-image.outputs.image}}
+
+      - name: Deploy Amazon ECS Task definition
+        env:
+          ECS_SERVICE: ${{env.ECS_SERVICE}}
+          ECS_CLUSTER: ${{env.ECS_CLUSTER}}
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{steps.task-def.outputs.task-definition}}
+          service: ${{env.ECS_SERVICE}}
+          cluster: ${{env.ECS_CLUSTER}}
+          wait-for-service-stability: true
+
+
+          #### Commented out due to job error 
+          #### GitHub is experiencing some service degradation, so this is GitHub issue and not an issue with th action
+
+    #   - name: Deploy to AWS CodeDeploy
+    #     uses: aws-actions/aws-codedeploy-github-deploy@v2
+
+    #     with:
+    #       application-name: ${{env.AWS_CODE_DEPLOY_APP}}
+    #       deployment-group: ${{env.AWS_CODE_DEPLOY_GROUP}}
+    #       region: ${{env.AWS_REGION}}
+    #       revision-type: github
+    #       commit-id: ${{github.sha}}
+delete baridi-2nd-gen-cluster
